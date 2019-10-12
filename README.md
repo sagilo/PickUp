@@ -23,5 +23,21 @@ Now you can mute your phone and be sure no important calls will be missed, at le
 
 ------
 
+### Contribute
+PR's and any other contributions are very much welcome!
+
+------
+
+### Install
+If you are not into compiling and stuff, feel free to install any of the pre-compiled [releases](https://github.com/sagilo/pickup/releases)
+
+------
+
+#### Why this app is not in Play Store?
+Google has restiricted the use of reading the incoming phone number (`CALL_LOG` permission) for non-dialer apps.  
+Cuurently, I have no intension of fighiting or working around this so I've figured an open source project can be a nice fit here.
+
+------
+
 ##### Note:  
 Android [supports](https://support.google.com/android/answer/9069335?hl=en) Do not disturb exceptions but it's limited only when DND is set (and not when device is just muted or has low volume) and it's not possible to configure the time window or the number of calls for this rule.
