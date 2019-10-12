@@ -5,7 +5,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="undo">Undo</string>
 
-    <string name="new_contact_config">New contact config</string>
+    <string name="new_contact_config">Contact settings</string>
     <string name="new_contact_config_name">Name</string>
     <string name="new_contact_config_phone_number">Phone number</string>
     <string name="new_contact_config_calls_interval">Time in minutes to look for repeated calls</string>
