@@ -1,0 +1,22 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- contact config -->
+    <dimen name="reminder_main_text_size">20sp</dimen>
+    <dimen name="reminder_item_text_size">18sp</dimen>
+    <dimen name="reminder_items_top_margin">15dp</dimen>
+    <dimen name="reminder_icon_size">24dp</dimen>
+    <dimen name="reminder_icon_margin_end">15dp</dimen>
+    <dimen name="reminder_item_margin_start">15dp</dimen>
+    <!-- the spinner has some more padding so it should be less than reminder_item_margin_start -->
+    <dimen name="reminder_spinner_icon_margin_end">8dp</dimen>
+    <!-- icon_size + icon_margin -->
+    <dimen name="reminder_item_inner_no_icon_margin_start">39dp</dimen>
+    <!-- margin_start + sum of icon_size + icon_margin -->
+    <dimen name="reminder_item_no_icon_margin_start">54dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+</resources>

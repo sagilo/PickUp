@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">PickUp</string>
+    <string name="action_settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="undo">Undo</string>
+
+    <string name="new_contact_config">New contact config</string>
+    <string name="new_contact_config_name">Name</string>
+    <string name="new_contact_config_phone_number">Phone number</string>
+    <string name="new_contact_config_calls_interval">Time in minutes to look for repeated calls</string>
+    <string name="new_contact_config_num_calls_before_changing_mode">Number of calls before unmute</string>
+    <string name="new_contact_config_volume_when_unmute">Volume when unmuted</string>
+    <string name="contact_config_interval_summary">%d calls within %d minutes to unmute</string>
+    <string name="delete_contact_config">Delete contact config</string>
+    <string name="x_deleted">%s deleted</string>
+
+    <string name="no_contact_configs">No contacts configured</string>
+    <string name="contact_configs">Contacts configurations</string>
+
+    <string name="delete_config">Delete contact config?</string>
+    <string name="contact_config_wont_be_saved">The contact config won\'t be saved. Do you want to delete it anyway?</string>
+    <string name="no_go_back">No, Go back</string>
+    <string name="yes_delete">Yes, Delete</string>
+    <string name="discard_changes">Discard changes?</string>
+    <string name="yes_discard">Yes, discard</string>
+    <string name="contact_config_changes_wont_be_saved">Contact config changes won\'t be saved. Do you want to discard them anyway?</string>
+
+    <string name="error_occurred_contact_dev">Error, please report to developer</string>
+    <string name="new_contact_config_missing_name">Please type a name</string>
+    <string name="new_contact_config_missing_phone_number">Please type a phone number</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="device_was_unmuted">Device was unmuted</string>
+    <string name="unmute_notification_summary">%s called %d times in the past %d minutes</string>
+
+</resources>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chauthai.swipereveallayout.SwipeRevealLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contact_config_swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    app:mode="same_level"
+    app:dragEdge="right">
+
+    <!-- Your secondary layout here -->
+    <FrameLayout
+        android:id="@+id/item_delete"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:clickable="true"
+        android:background="@android:color/holo_red_dark"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_trash_outline"
+            android:contentDescription="@string/delete_contact_config"/>
+
+    </FrameLayout>
+
+    <!-- Your main layout here -->
+    <FrameLayout
+        android:id="@+id/contact_config_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contact_config_name"
+                    android:text="Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/contact_config_phone_number"
+                    android:textSize="12sp"
+                    android:text="0543339988"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        app:srcCompat="@drawable/ic_volume"/>
+
+                    <TextView
+                        android:id="@+id/contact_config_volume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:text="15"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/contact_config_calls_before_change_mode"
+                    android:textSize="13sp"
+                    android:text="3 calls within 15 minutes to unmute"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

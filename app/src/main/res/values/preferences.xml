@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_latest_5" translatable="false">error_5</string>
+    <string name="error_latest_4" translatable="false">error_4</string>
+    <string name="error_latest_3" translatable="false">error_3</string>
+    <string name="error_latest_2" translatable="false">error_2</string>
+    <string name="error_latest_1" translatable="false">error_1</string>
+
+    <integer name="volume_when_unmuted_min">1</integer>
+    <integer name="volume_when_unmuted_max">15</integer>
+
+    <integer name="call_interval_minutes_min">3</integer>
+    <integer name="call_interval_minutes_max">90</integer>
+    <integer name="call_interval_minutes_default">15</integer>
+
+    <integer name="calls_before_unmuted_min">1</integer>
+    <integer name="calls_before_unmuted_max">10</integer>
+    <integer name="calls_before_unmuted_default">3</integer>
+
+</resources>
