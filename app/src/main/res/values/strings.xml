@@ -8,7 +8,7 @@
     <string name="name">Name</string>
     <string name="contact">Contact</string>
 
-    <string name="new_contact_config">Contact settings</string>
+    <string name="new_contact_config">Contact</string>
     <string name="new_contact_config_name">Name</string>
     <string name="new_contact_config_phone_number">Phone number</string>
     <string name="new_contact_config_calls_interval">Time in minutes to look for repeated calls</string>
@@ -19,7 +19,7 @@
     <string name="x_deleted">%s deleted</string>
 
     <string name="no_contact_configs">No contacts configured</string>
-    <string name="contact_configs">Contacts configurations</string>
+    <string name="contacts">Contacts</string>
 
     <string name="delete_config">Delete contact config?</string>
     <string name="contact_config_wont_be_saved">The contact config won\'t be saved. Do you want to delete it anyway?</string>

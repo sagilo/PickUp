@@ -83,3 +83,9 @@ lint/tmp/
 # lint/reports/
 
 app/google-services.json
+app/release/
+keys/
+.idea/
+
+.DS_Store
+

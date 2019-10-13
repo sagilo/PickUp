@@ -152,7 +152,7 @@ public class ContactConfigsFragment extends Fragment implements ContactConfigRec
 
         Activity activity = getActivity();
         if (activity != null) {
-            activity.setTitle(getString(R.string.contact_configs));
+            activity.setTitle(getString(R.string.contacts));
         }
     }
 
