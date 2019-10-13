@@ -2,8 +2,9 @@ package com.lowenhardt.pickup;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -40,7 +41,7 @@ public class ErrorLogger {
         return str;
     }
 
-    // dont do anything that requires main thread
+    // don't do anything that requires main thread
     static public void log(Context context, String tag, String msg, Exception e) {
         String exceptionStr = toString(e);
         if (context != null) {

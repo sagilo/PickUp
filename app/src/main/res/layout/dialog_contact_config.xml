@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textSize="@dimen/contact_config_edittext_text_size"
-                    android:hint="@string/name_auto_complete"/>
+                    android:hint="@string/name"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

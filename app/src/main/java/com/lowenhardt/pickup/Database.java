@@ -91,8 +91,7 @@ public class Database extends SQLiteOpenHelper {
             contactConfig.setId(id);
             return contactConfig;
         } catch (SQLiteException e) {
-            Crashlytics.log(Log.ERROR, TAG, "Exception while adding ContactConfig");
-            Crashlytics.logException(e);
+            ErrorLogger.log(context, TAG, "Exception while adding ContactConfig", e);
         } finally {
             if (db != null) {
                 db.close();
@@ -105,7 +104,7 @@ public class Database extends SQLiteOpenHelper {
     // This will insert the reminder as a new row, even if it already exists with ID!
     private ContactConfig addContactConfig(ContactConfig contactConfig, Context context) {
         if (contactConfig == null) {
-            Crashlytics.log(Log.ERROR, TAG, "Tried to add null contactConfig");
+            ErrorLogger.log(context, TAG, "Tried to add null contactConfig", true);
             return null;
         }
 
@@ -118,8 +117,7 @@ public class Database extends SQLiteOpenHelper {
             Crashlytics.log(Log.INFO, TAG, "Added new contactConfig to DB, reminder: "+contactConfig);
             return contactConfig;
         } catch (SQLiteException e) {
-            Crashlytics.log(Log.ERROR, TAG, "Exception while adding contactConfig");
-            Crashlytics.logException(e);
+            ErrorLogger.log(context, TAG, "Exception while adding contactConfig", e);
         } finally {
             if (db != null) {
                 db.close();
@@ -157,8 +155,7 @@ public class Database extends SQLiteOpenHelper {
             Crashlytics.log(Log.INFO, TAG, "Removed contact config from DB, id: "+id+", numRemoved: "+removed);
         } catch (SQLiteException e) {
             if (context != null) {
-                Crashlytics.log(Log.ERROR, TAG, "Exception while trying to remove scheduled reminder, id: " + id);
-                Crashlytics.logException(e);
+                ErrorLogger.log(context, TAG, "Exception while trying to remove scheduled reminder, id: " + id, e);
             }
         } finally {
             if (db != null) {
@@ -176,8 +173,7 @@ public class Database extends SQLiteOpenHelper {
             Crashlytics.log(Log.INFO, TAG, "Removed contact configs, ids: "+args[0]+", deleted: "+deleted);
         } catch (SQLiteException e) {
             String idsStr = TextUtils.join(",", ids);
-            Crashlytics.log(Log.ERROR, TAG, "Exception while trying to remove scheduled reminders, ids: "+idsStr);
-            Crashlytics.logException(e);
+            ErrorLogger.log(context, TAG, "Exception while trying to remove scheduled reminders, ids: "+idsStr, e);
         } finally {
             if (db != null) {
                 db.close();
@@ -206,8 +202,7 @@ public class Database extends SQLiteOpenHelper {
                 cursor.close();
             }
         } catch (SQLiteException e) {
-            Crashlytics.log(Log.ERROR, TAG, "Exception while trying to get reminders");
-            Crashlytics.logException(e);
+            ErrorLogger.log(context, TAG, "Exception while trying to get reminders", e);
         } finally {
             if (db != null) {
                 db.close();
@@ -238,8 +233,7 @@ public class Database extends SQLiteOpenHelper {
                 cursor.close();
             }
         } catch (SQLiteException e) {
-            Crashlytics.log(Log.ERROR, TAG, "Exception while trying to get reminders");
-            Crashlytics.logException(e);
+            ErrorLogger.log(context, TAG, "Exception while trying to get reminders", e);
         } finally {
             if (db != null) {
                 db.close();
@@ -258,8 +252,7 @@ public class Database extends SQLiteOpenHelper {
                 Crashlytics.log(Log.INFO, TAG, "Deleted all reminders, num deleted: "+deleted);
             }
         } catch (SQLiteException e) {
-            Crashlytics.log(Log.ERROR, TAG, "Exception while trying to remove all reminders");
-            Crashlytics.logException(e);
+            ErrorLogger.log(context, TAG, "Exception while trying to remove all reminders", e);
         } finally {
             if (db != null) {
                 db.close();

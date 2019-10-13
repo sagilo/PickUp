@@ -18,4 +18,6 @@
     <integer name="calls_before_unmuted_max">10</integer>
     <integer name="calls_before_unmuted_default">3</integer>
 
+    <string name="contact_email">pickup@lowenhardt.com</string>
+
 </resources>

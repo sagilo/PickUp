@@ -5,7 +5,8 @@
     <string name="loading">Loading&#8230;</string>
     <string name="loading_contacts">Loading contacts&#8230;</string>
     <string name="undo">Undo</string>
-    <string name="name_auto_complete">Name (auto-complete)</string>
+    <string name="name">Name</string>
+    <string name="contact">Contact</string>
 
     <string name="new_contact_config">Contact settings</string>
     <string name="new_contact_config_name">Name</string>
@@ -35,5 +36,7 @@
 
     <string name="device_was_unmuted">Device was unmuted</string>
     <string name="unmute_notification_summary">%s called %d times in the past %d minutes</string>
+
+    <string name="string_select_email_app">Select an email app</string>
 
 </resources>

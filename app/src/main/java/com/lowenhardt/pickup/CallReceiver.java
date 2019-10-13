@@ -58,8 +58,7 @@ public class CallReceiver extends PhoneCallReceiver {
             changeVolume(c, matchingContact);
             postUnmuteNotification(c, matchingContact);
         } catch (Exception e) {
-            Crashlytics.log(Log.ERROR, TAG, "Failed to change ringer/volumes");
-            Crashlytics.logException(e);
+            ErrorLogger.log(c, TAG, "Failed to change ringer/volumes", e);
         }
     }
 
