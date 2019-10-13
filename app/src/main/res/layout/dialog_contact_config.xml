@@ -77,7 +77,7 @@
                     android:textSize="@dimen/contact_config_edittext_text_size"
                     android:inputType="phone"
                     android:digits="0123456789+"
-                    android:maxLength="14"
+                    android:maxLength="17"
                     android:hint="@string/new_contact_config_phone_number" />
 
             </com.google.android.material.textfield.TextInputLayout>

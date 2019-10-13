@@ -18,10 +18,10 @@ android {
         applicationId "com.lowenhardt.pickup"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "pickup.vn.${versionName}.vc.${versionCode}")
+        setProperty("archivesBaseName", "pickup.${versionName}.vc.${versionCode}")
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
     }
