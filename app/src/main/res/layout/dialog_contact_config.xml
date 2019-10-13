@@ -102,6 +102,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:textSize="@dimen/contact_config_edittext_text_size"
                     android:text="@string/new_contact_config_calls_interval" />
 
@@ -116,8 +120,8 @@
                         app:isb_max="@integer/call_interval_minutes_max"
                         app:isb_min="@integer/call_interval_minutes_min"
                         app:isb_progress="@integer/call_interval_minutes_default"
+                        app:isb_show_indicator="rounded_rectangle"
                         app:isb_only_thumb_draggable="false"
-                        app:isb_show_indicator="circular_bubble"
                         app:isb_show_tick_texts="true"
                         app:isb_ticks_count="2" />
 
@@ -145,6 +149,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:textSize="@dimen/contact_config_edittext_text_size"
                     android:text="@string/new_contact_config_num_calls_before_changing_mode" />
 
@@ -160,7 +168,7 @@
                         app:isb_min="@integer/calls_before_unmuted_min"
                         app:isb_progress="@integer/calls_before_unmuted_default"
                         app:isb_only_thumb_draggable="false"
-                        app:isb_show_indicator="circular_bubble"
+                        app:isb_show_indicator="rounded_rectangle"
                         app:isb_show_tick_texts="true"
                         app:isb_ticks_count="2" />
 
@@ -188,6 +196,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:textSize="@dimen/contact_config_edittext_text_size"
                     android:text="@string/new_contact_config_volume_when_unmute" />
 
@@ -203,7 +215,7 @@
                         app:isb_min="@integer/volume_when_unmuted_min"
                         app:isb_progress="@integer/volume_when_unmuted_max"
                         app:isb_only_thumb_draggable="false"
-                        app:isb_show_indicator="circular_bubble"
+                        app:isb_show_indicator="rounded_rectangle"
                         app:isb_show_tick_texts="true"
                         app:isb_ticks_count="2" />
 
