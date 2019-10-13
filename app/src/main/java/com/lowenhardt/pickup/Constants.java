@@ -5,6 +5,7 @@ public class Constants {
 
     public static final int REQUEST_PERMISSION_READ_PHONE_STATE = 1003;
     public static final int REQUEST_PERMISSION_READ_CALL_LOG = 1004;
+    public static final int REQUEST_PERMISSION_READ_CONTACTS = 1005;
 
     static public String NOTIFICATION_CHANNEL_GENERAL_ID = "general";
     static public String NOTIFICATION_CHANNEL_GENERAL_NAME = "General";

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import com.crashlytics.android.Crashlytics;
 
 import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,23 +63,26 @@ public class MainActivity extends AppCompatActivity {
         checkAllPermissionsGranted();
     }
 
-    private boolean checkAllPermissionsGranted() {
+    private void checkAllPermissionsGranted() {
         if (!checkReadPhoneStatePermission()) {
-            Crashlytics.log(Log.WARN, TAG, "read phone state permissions isn't granted, requesting");
-            return false;
+            Crashlytics.log(Log.WARN, TAG, "read phone state permission isn't granted, requesting");
+            return;
         }
 
         if (!checkReadCallLogPermissionGranted()) {
-            Crashlytics.log(Log.WARN, TAG, "read call log permissions isn't granted, requesting");
-            return false;
+            Crashlytics.log(Log.WARN, TAG, "read call log permission isn't granted, requesting");
+            return;
+        }
+
+        if (!checkReadContactsPermissionGranted()) {
+            Crashlytics.log(Log.WARN, TAG, "read contacts permission isn't granted, requesting");
+            return;
         }
 
         if (!checkAccessNotificationPolicyPermissionGranted()) {
             Crashlytics.log(Log.WARN, TAG, "access notification policy (DND) permissions isn't granted, requesting");
-            return false;
+            return;
         }
-
-        return true;
     }
 
     private boolean checkReadPhoneStatePermission() {
@@ -101,6 +105,18 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{READ_CALL_LOG},
                 Constants.REQUEST_PERMISSION_READ_CALL_LOG);
+
+        return false;
+    }
+
+    private boolean checkReadContactsPermissionGranted() {
+        if (Utils.checkReadContactsPermission(this)) {
+            return true;
+        }
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{READ_CONTACTS},
+                Constants.REQUEST_PERMISSION_READ_CONTACTS);
 
         return false;
     }

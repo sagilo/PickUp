@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.lowenhardt.pickup.models.ContactConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -188,7 +189,7 @@ public class ContactConfigsFragment extends Fragment implements ContactConfigRec
         }
 
         String name = contactConfig.getName();
-        View view = activity.findViewById(R.id.contact_configs_list_root);
+        View view = activity.findViewById(R.id.contact_configs_list_container);
         String text = view.getContext().getString(R.string.x_deleted, name);
         snackbar = Snackbar.make(view, text, undoTimeout)
                 .setAction(view.getContext().getString(R.string.undo), new View.OnClickListener() {

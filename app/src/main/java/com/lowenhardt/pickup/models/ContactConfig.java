@@ -1,7 +1,6 @@
-package com.lowenhardt.pickup;
+package com.lowenhardt.pickup.models;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,12 +10,11 @@ import androidx.annotation.Nullable;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lowenhardt.pickup.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.provider.ContactsContract.PhoneLookup.CONTENT_FILTER_URI;
 
 public class ContactConfig implements Comparable<ContactConfig> {
 
@@ -43,13 +41,13 @@ public class ContactConfig implements Comparable<ContactConfig> {
      * @param volumeWhenUnmuted volume for when device is unmuted
      * @param calls a list of the recent calls
      */
-    ContactConfig(long _id,
-                         String name,
-                         String phoneNumber,
-                         int callIntervalSeconds,
-                         int numCallsToChangeMode,
-                         int volumeWhenUnmuted,
-                         ArrayList<Date> calls) {
+    public ContactConfig(long _id,
+                  String name,
+                  String phoneNumber,
+                  int callIntervalSeconds,
+                  int numCallsToChangeMode,
+                  int volumeWhenUnmuted,
+                  ArrayList<Date> calls) {
         this._id = _id;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -71,36 +69,32 @@ public class ContactConfig implements Comparable<ContactConfig> {
         return name;
     }
 
-    @NonNull String getPhoneNumber() {
+    public @NonNull String getPhoneNumber() {
         return phoneNumber;
     }
 
-    Uri getPhoneNumberUri() {
-        return Uri.withAppendedPath(CONTENT_FILTER_URI, Uri.encode(getPhoneNumber()));
-    }
-
-    int getCallIntervalSeconds() {
+    public int getCallIntervalSeconds() {
         return callIntervalSeconds;
     }
 
-    int getCallIntervalMinutes() {
+    public int getCallIntervalMinutes() {
         return getCallIntervalSeconds() / 60;
     }
 
-    int getNumCallsToChangeMode() {
+    public int getNumCallsToChangeMode() {
         return numCallsToChangeMode;
     }
 
 
-    int getVolumeWhenUnmuted() {
+    public int getVolumeWhenUnmuted() {
         return volumeWhenUnmuted;
     }
 
-    ArrayList<Date> getCalls() {
+    public ArrayList<Date> getCalls() {
         return calls;
     }
 
-    void addCall(Date date) {
+    public void addCall(Date date) {
         if (calls == null) {
             calls = new ArrayList<>();
         }
@@ -108,17 +102,21 @@ public class ContactConfig implements Comparable<ContactConfig> {
         calls.add(date);
     }
 
-    boolean shouldChangeMode() {
+    public boolean areCallConditionsMet() {
         if (calls == null) {
             return false;
         }
 
-        if (numCallsToChangeMode > calls.size()) {
-            Crashlytics.log(Log.INFO, TAG, "There are still no "+numCallsToChangeMode+" calls from this number, not changing");
+        int callsInInterval = getNumCallsInInterval();
+        int callsThreshold = getNumCallsToChangeMode();
+
+        if (callsThreshold > calls.size()) {
+            Crashlytics.log(Log.INFO, TAG, "Config requires "+callsThreshold+" calls in " +
+                    ""+getCallIntervalSeconds()+" seconds, got only "+callsInInterval+"");
             return false;
         }
 
-        Date lastCallDate = calls.get(numCallsToChangeMode - 1);
+        Date lastCallDate = calls.get(callsThreshold - 1);
         if (lastCallDate == null) {
             return false;
         }
@@ -126,7 +124,7 @@ public class ContactConfig implements Comparable<ContactConfig> {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, -1 * callIntervalSeconds);
         if (lastCallDate.before(calendar.getTime())) {
-            Crashlytics.log(Log.INFO, TAG, "Call #"+numCallsToChangeMode+" isn't in interval, date: "+lastCallDate);
+            Crashlytics.log(Log.INFO, TAG, "Call #"+callsThreshold+" isn't in interval, date: "+lastCallDate);
             return false;
         }
 
@@ -135,7 +133,7 @@ public class ContactConfig implements Comparable<ContactConfig> {
     }
 
     // returns how many calls the contact called in the defined interval
-    int getNumCallsInInterval() {
+    public int getNumCallsInInterval() {
         if (calls == null || calls.isEmpty()) {
             return 0;
         }
@@ -158,7 +156,7 @@ public class ContactConfig implements Comparable<ContactConfig> {
         return "ContactConfig | name: "+name+", id: "+_id;
     }
 
-    void fillIntent(Intent intent) {
+    public void fillIntent(Intent intent) {
         intent.putExtra(Constants.EXTRA_CONTACT_CONFIG_ID, getId());
         intent.putExtra(Constants.EXTRA_CONTACT_CONFIG_NAME, getName());
         intent.putExtra(Constants.EXTRA_CONTACT_CONFIG_PHONE_NUMBER, getPhoneNumber());
@@ -169,7 +167,7 @@ public class ContactConfig implements Comparable<ContactConfig> {
     }
 
     @Nullable
-    static ContactConfig fromIntent(Bundle bundle) {
+    public static ContactConfig fromIntent(Bundle bundle) {
         if (bundle == null) {
             return null;
         }
@@ -196,7 +194,7 @@ public class ContactConfig implements Comparable<ContactConfig> {
     }
 
 
-    static @Nullable String serializeCalls(ArrayList<Date> calls) {
+    public static @Nullable String serializeCalls(ArrayList<Date> calls) {
         if (calls == null) {
             return null;
         }
@@ -208,7 +206,7 @@ public class ContactConfig implements Comparable<ContactConfig> {
         return new Gson().toJson(calls);
     }
 
-    static @Nullable ArrayList<Date> deserializeCalls(String calls) {
+    public static @Nullable ArrayList<Date> deserializeCalls(String calls) {
         if (calls == null) {
             return null;
         }

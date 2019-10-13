@@ -1,0 +1,32 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_contact_container_id"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:baselineAligned="false"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/contact_list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/text_primary" />
+
+    <TextView
+        android:id="@+id/contact_list_item_phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="13sp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/text_primary" />
+
+</LinearLayout> 

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.crashlytics.android.Crashlytics;
+import com.lowenhardt.pickup.models.ContactConfig;
 
 import java.util.Collections;
 import java.util.List;

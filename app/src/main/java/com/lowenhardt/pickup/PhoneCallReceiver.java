@@ -3,9 +3,7 @@ package com.lowenhardt.pickup;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -22,7 +20,7 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
     private static Date callStartTime;
     private static boolean isIncoming;
-    private static Uri savedNumber;  //because the passed incoming is only valid in ringing
+    private static String savedNumber;  //because the passed incoming is only valid in ringing
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -56,25 +54,24 @@ public abstract class PhoneCallReceiver extends BroadcastReceiver {
             return;
         }
 
-        Uri numberUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-        onCallStateChanged(context, state, numberUri);
+        onCallStateChanged(context, state, number);
     }
 
     //Derived classes should override these to respond to specific events of interest
-    protected abstract void onIncomingCallReceived(Context ctx, Uri number, Date start);
-    protected abstract void onIncomingCallAnswered(Context ctx, Uri number, Date start);
-    protected abstract void onIncomingCallEnded(Context ctx, Uri number, Date start, Date end);
+    protected abstract void onIncomingCallReceived(Context ctx, String number, Date start);
+    protected abstract void onIncomingCallAnswered(Context ctx, String number, Date start);
+    protected abstract void onIncomingCallEnded(Context ctx, String number, Date start, Date end);
 
-    protected abstract void onOutgoingCallStarted(Context ctx, Uri number, Date start);
-    protected abstract void onOutgoingCallEnded(Context ctx, Uri number, Date start, Date end);
+    protected abstract void onOutgoingCallStarted(Context ctx, String number, Date start);
+    protected abstract void onOutgoingCallEnded(Context ctx, String number, Date start, Date end);
 
-    protected abstract void onMissedCall(Context ctx, Uri number, Date start);
+    protected abstract void onMissedCall(Context ctx, String number, Date start);
 
     //Deals with actual events
 
     //Incoming call-  goes from IDLE to RINGING when it rings, to OFFHOOK when it's answered, to IDLE when its hung up
     //Outgoing call-  goes from IDLE to OFFHOOK when it dials out, to IDLE when hung up
-    public void onCallStateChanged(Context context, int state, Uri number) {
+    public void onCallStateChanged(Context context, int state, String number) {
         if (lastState == state) {
             // No change, debounce extras
             return;

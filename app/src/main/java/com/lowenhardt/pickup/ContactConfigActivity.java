@@ -3,8 +3,11 @@ package com.lowenhardt.pickup;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -28,10 +36,16 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.lowenhardt.pickup.models.Contact;
+import com.lowenhardt.pickup.models.ContactConfig;
+import com.lowenhardt.pickup.views.CustomAutoCompleteView;
 import com.warkiz.widget.IndicatorSeekBar;
 
+import java.util.ArrayList;
 
-public class ContactConfigActivity extends AppCompatActivity {
+
+public class ContactConfigActivity extends AppCompatActivity implements AsyncQueryContacts.QueryCB {
 
     private static final String TAG = ContactConfigActivity.class.getSimpleName();
 
@@ -102,15 +116,30 @@ public class ContactConfigActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public static class ContactConfigDialogFragment extends DialogFragment {
+    @Override
+    public void onSuccess(ArrayList<Contact> contacts) {
+
+    }
+
+    @Override
+    public void onFailure() {
+
+    }
+
+    public static class ContactConfigDialogFragment extends DialogFragment implements AsyncQueryContacts.QueryCB {
         private final String TAG = ContactConfigDialogFragment.class.getSimpleName();
 
         View rootView;
+        View layoutContainer;
+        View progressBarLayout;
         EditText nameET;
         EditText phoneNumberET;
         IndicatorSeekBar callsIntervalSB;
         IndicatorSeekBar numCallsBeforeModeChangeSB;
         IndicatorSeekBar volumeWhenUnmutedSB;
+
+        ArrayAdapter<Contact> autoCompleteArrayAdapter;
+        CustomAutoCompleteView contactsTextView;
 
         long loadedContactConfigId = -1;
 
@@ -134,21 +163,17 @@ public class ContactConfigActivity extends AppCompatActivity {
 
             rootView = inflater.inflate(R.layout.dialog_contact_config, container, false);
 
+            layoutContainer = rootView.findViewById(R.id.contactConfigContainer);
+            progressBarLayout = rootView.findViewById(R.id.progressBar);
+
+            showProgressBar(true);
+
+            new AsyncQueryContacts(activity, this).execute();
+
             nameET = rootView.findViewById(R.id.contactConfigNameEditText);
             nameET.requestFocus();
 
             phoneNumberET = rootView.findViewById(R.id.contactConfigPhoneNumberEditText);
-//            phoneNumberET.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    v.getParent().requestDisallowInterceptTouchEvent(true);
-//                    if (MotionEvent.ACTION_UP == event.getAction()) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(false);
-//                    }
-//                    return false;
-//                }
-//            });
-
             callsIntervalSB = rootView.findViewById(R.id.callsIntervalMinutesSeekBar);
             numCallsBeforeModeChangeSB = rootView.findViewById(R.id.numCallsToChangeModeSeekBar);
             volumeWhenUnmutedSB = rootView.findViewById(R.id.volumeWhenUnmutedSeekBar);
@@ -176,6 +201,18 @@ public class ContactConfigActivity extends AppCompatActivity {
             }
 
             return rootView;
+        }
+
+        private void showProgressBar(boolean show) {
+            if (show) {
+                Crashlytics.log(Log.INFO, TAG, "Showing progress bar");
+                layoutContainer.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            } else {
+                Crashlytics.log(Log.INFO, TAG, "Hiding progress bar");
+                layoutContainer.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
         }
 
         private void populateContactConfigInViews(ContactConfig contactConfig) {
@@ -223,6 +260,24 @@ public class ContactConfigActivity extends AppCompatActivity {
             }
 
             return super.onOptionsItemSelected(item);
+        }
+
+        void initContactsAutoComplete(ArrayList<Contact> contacts) {
+            autoCompleteArrayAdapter = new AutoCompleteArrayAdapter(getActivity(), R.layout.list_item_contact, contacts);
+            contactsTextView = rootView.findViewById(R.id.contactConfigNameEditText);
+            contactsTextView.setThreshold(2); // start from 2nd character
+            contactsTextView.setAdapter(autoCompleteArrayAdapter);
+            CustomAutoCompleteTextChangedListener textChangedListener =
+                    new CustomAutoCompleteTextChangedListener(contactsTextView, contacts, getActivity());
+            contactsTextView.addTextChangedListener(textChangedListener);
+            contactsTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
+                    Contact contact = (Contact)parent.getItemAtPosition(pos);
+                    contactsTextView.setText(contact.name);
+                    phoneNumberET.setText(contact.phoneNumber);
+                }
+            });
         }
 
         private void save() {
@@ -282,6 +337,109 @@ public class ContactConfigActivity extends AppCompatActivity {
                 return;
             }
             inputMethodManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), 0);
+        }
+
+        @Override
+        public void onSuccess(ArrayList<Contact> contacts) {
+            Crashlytics.log(Log.INFO, TAG, "Query contacts succeeded, setting in layout");
+            initContactsAutoComplete(contacts);
+            showProgressBar(false);
+        }
+
+        @Override
+        public void onFailure() {
+            showProgressBar(false);
+        }
+
+        private class AutoCompleteArrayAdapter extends ArrayAdapter<Contact> {
+
+            Context mContext;
+            int layoutResourceId;
+            ArrayList<Contact> data;
+
+            private AutoCompleteArrayAdapter(Context mContext, int layoutResourceId, ArrayList<Contact> data) {
+                super(mContext, layoutResourceId, data);
+
+                this.layoutResourceId = layoutResourceId;
+                this.mContext = mContext;
+                this.data = data;
+            }
+
+            @Override
+            public @NonNull View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                try{
+                    if (convertView == null){
+                        // inflate the layout
+                        LayoutInflater inflater = getActivity().getLayoutInflater();
+                        convertView = inflater.inflate(layoutResourceId, parent, false);
+                    }
+
+                    // object item based on the position
+                    Contact contact = data.get(position);
+
+                    TextView name = convertView.findViewById(R.id.contact_list_item_name);
+                    name.setText(contact.name);
+
+                    TextView email = convertView.findViewById(R.id.contact_list_item_phone_number);
+                    email.setText(contact.phoneNumber);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return convertView;
+            }
+        }
+
+        private class CustomAutoCompleteTextChangedListener implements TextWatcher {
+
+            Context context;
+            AutoCompleteTextView autoCompleteTextView;
+            ArrayList<Contact> allContacts;
+
+            CustomAutoCompleteTextChangedListener(AutoCompleteTextView textView, ArrayList<Contact> allContacts, Context context){
+                this.autoCompleteTextView = textView;
+                this.allContacts = allContacts;
+                this.context = context;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
+                if (autoCompleteTextView.isPerformingCompletion()) { // if it was item click
+                    return;
+                }
+                try{
+                    // update the adapter
+                    autoCompleteArrayAdapter.notifyDataSetChanged();
+                    // filter items
+                    ArrayList<Contact> filteredList = filterItems(userInput.toString().toLowerCase());
+                    // update the adapter
+                    autoCompleteArrayAdapter = new AutoCompleteArrayAdapter(context, R.layout.list_item_contact, filteredList);
+                    autoCompleteTextView.setAdapter(autoCompleteArrayAdapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private ArrayList<Contact> filterItems(String userInput) {
+                String userInputLower = userInput.toLowerCase();
+                ArrayList<Contact> filtered = new ArrayList<>();
+                for (Contact contact : allContacts) {
+                    if (contact.name.toLowerCase().startsWith(userInputLower) ||
+                            contact.phoneNumber.toLowerCase().startsWith(userInputLower)) {
+                        filtered.add(contact);
+                    }
+                }
+                return filtered;
+            }
         }
     }
 

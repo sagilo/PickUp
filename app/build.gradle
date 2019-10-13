@@ -18,8 +18,8 @@ android {
         applicationId "com.lowenhardt.pickup"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "pickup.vn.${versionName}.vc.${versionCode}")
         multiDexEnabled = true
@@ -39,7 +39,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
-    implementation "com.android.support:support-compat:28.0.0"
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'

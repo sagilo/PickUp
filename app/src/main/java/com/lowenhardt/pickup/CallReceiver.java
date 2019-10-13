@@ -2,13 +2,14 @@ package com.lowenhardt.pickup;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.net.Uri;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.crashlytics.android.Crashlytics;
+import com.lowenhardt.pickup.models.ContactConfig;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,14 +19,15 @@ public class CallReceiver extends PhoneCallReceiver {
     private static final String TAG = CallReceiver.class.getSimpleName();
 
     @Override
-    protected void onIncomingCallReceived(Context c, Uri number, Date start) {
+    protected void onIncomingCallReceived(Context c, String number, Date start) {
         Database db = new Database(c);
         List<ContactConfig> contactConfigs = db.getAllContactConfigs(c);
         ContactConfig matchingContact = null;
         for (ContactConfig contactConfig : contactConfigs) {
-            Uri contactNumber = contactConfig.getPhoneNumberUri();
-            if (contactNumber.equals(number)) {
+            String contactNumber = contactConfig.getPhoneNumber();
+            if (PhoneNumberUtils.compare(contactNumber, number)) {
                 matchingContact = contactConfig;
+                break;
             }
         }
 
@@ -37,7 +39,9 @@ public class CallReceiver extends PhoneCallReceiver {
         Crashlytics.log(Log.INFO, TAG, "Incoming phone number matches contact config: "+matchingContact);
 
         matchingContact.addCall(start);
-        if (!matchingContact.shouldChangeMode()) {
+        db.addOrUpdate(matchingContact, c);
+
+        if (!matchingContact.areCallConditionsMet()) {
             return;
         }
 
@@ -140,27 +144,27 @@ public class CallReceiver extends PhoneCallReceiver {
     }
 
     @Override
-    protected void onIncomingCallAnswered(Context ctx, Uri number, Date start) {
+    protected void onIncomingCallAnswered(Context ctx, String number, Date start) {
         //
     }
 
     @Override
-    protected void onIncomingCallEnded(Context ctx, Uri number, Date start, Date end) {
+    protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end) {
         //
     }
 
     @Override
-    protected void onOutgoingCallStarted(Context ctx, Uri number, Date start) {
+    protected void onOutgoingCallStarted(Context ctx, String number, Date start) {
         //
     }
 
     @Override
-    protected void onOutgoingCallEnded(Context ctx, Uri number, Date start, Date end) {
+    protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
         //
     }
 
     @Override
-    protected void onMissedCall(Context ctx, Uri number, Date start) {
+    protected void onMissedCall(Context ctx, String number, Date start) {
         //
     }
 

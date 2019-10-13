@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
+import com.lowenhardt.pickup.models.ContactConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,7 +148,7 @@ public class Database extends SQLiteOpenHelper {
      * @param id the id of the contact config
      * @param context Context
      */
-    public void removeContactConfig(long id, Context context) {
+    void removeContactConfig(long id, Context context) {
         SQLiteDatabase db = null;
         try {
             db = this.getWritableDatabase();
@@ -166,7 +167,7 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-    public void removeContactConfigs(List<Long> ids, Context context) {
+    void removeContactConfigs(List<Long> ids, Context context) {
         SQLiteDatabase db = null;
         try {
             db = this.getWritableDatabase();
@@ -216,8 +217,7 @@ public class Database extends SQLiteOpenHelper {
         return contactConfig;
     }
 
-    public @NonNull
-    List<ContactConfig> getAllContactConfigs(Context context) {
+    @NonNull List<ContactConfig> getAllContactConfigs(Context context) {
         List<ContactConfig> configs = new ArrayList<>();
         SQLiteDatabase db = null;
 

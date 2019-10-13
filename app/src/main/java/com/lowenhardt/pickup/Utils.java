@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import com.crashlytics.android.Crashlytics;
 
 import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
 class Utils {
@@ -29,12 +30,16 @@ class Utils {
         }
     }
 
-    public static boolean checkReadPhoneStatePermission(Context context) {
+    static boolean checkReadPhoneStatePermission(Context context) {
         return checkPermission(context, READ_PHONE_STATE);
     }
 
-    public static boolean checkReadCallLogPermission(Context context) {
+    static boolean checkReadCallLogPermission(Context context) {
         return checkPermission(context, READ_CALL_LOG);
+    }
+
+    static boolean checkReadContactsPermission(Context context) {
+        return checkPermission(context, READ_CONTACTS);
     }
 
     private static boolean checkPermission(Context context, String permission) {

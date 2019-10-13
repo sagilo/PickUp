@@ -1,4 +1,4 @@
-package com.lowenhardt.pickup.Views;
+package com.lowenhardt.pickup.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
