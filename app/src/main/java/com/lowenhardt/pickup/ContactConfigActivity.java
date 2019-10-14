@@ -23,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -63,7 +64,7 @@ public class ContactConfigActivity extends AppCompatActivity implements AsyncQue
 
         ContactConfigDialogFragment fragment = ContactConfigDialogFragment.newInstance(intent.getExtras());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, fragment, "contact_config_gragment");
+        ft.replace(R.id.fragment_container, fragment, ContactConfigDialogFragment.TAG);
         ft.commit();
 
         mRootView = findViewById(R.id.newReminderRoot);
@@ -127,11 +128,11 @@ public class ContactConfigActivity extends AppCompatActivity implements AsyncQue
     }
 
     public static class ContactConfigDialogFragment extends DialogFragment implements AsyncQueryContacts.QueryCB {
-        private final String TAG = ContactConfigDialogFragment.class.getSimpleName();
+        static final String TAG = ContactConfigDialogFragment.class.getSimpleName();
 
         View rootView;
-        View layoutContainer;
         View progressBarLayout;
+        Toast loadingToast;
         EditText nameET;
         EditText phoneNumberET;
         IndicatorSeekBar callsIntervalSB;
@@ -163,10 +164,9 @@ public class ContactConfigActivity extends AppCompatActivity implements AsyncQue
 
             rootView = inflater.inflate(R.layout.dialog_contact_config, container, false);
 
-            layoutContainer = rootView.findViewById(R.id.contactConfigContainer);
             progressBarLayout = rootView.findViewById(R.id.progressBar);
 
-            showProgressBar(true);
+            showProgressBar(true, getString(R.string.loading_contacts));
 
             new AsyncQueryContacts(activity, this).execute();
 
@@ -203,15 +203,18 @@ public class ContactConfigActivity extends AppCompatActivity implements AsyncQue
             return rootView;
         }
 
-        private void showProgressBar(boolean show) {
+        private void showProgressBar(boolean show, String text) {
             if (show) {
                 Crashlytics.log(Log.INFO, TAG, "Showing progress bar");
-                layoutContainer.setVisibility(View.GONE);
                 progressBarLayout.setVisibility(View.VISIBLE);
+                loadingToast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+                loadingToast.show();
             } else {
                 Crashlytics.log(Log.INFO, TAG, "Hiding progress bar");
-                layoutContainer.setVisibility(View.VISIBLE);
                 progressBarLayout.setVisibility(View.GONE);
+                if (loadingToast != null) {
+                    loadingToast.cancel();
+                }
             }
         }
 
@@ -343,12 +346,12 @@ public class ContactConfigActivity extends AppCompatActivity implements AsyncQue
         public void onSuccess(ArrayList<Contact> contacts) {
             Crashlytics.log(Log.INFO, TAG, "Query contacts succeeded, setting in layout");
             initContactsAutoComplete(contacts);
-            showProgressBar(false);
+            showProgressBar(false, null);
         }
 
         @Override
         public void onFailure() {
-            showProgressBar(false);
+            showProgressBar(false, null);
         }
 
         private class AutoCompleteArrayAdapter extends ArrayAdapter<Contact> {

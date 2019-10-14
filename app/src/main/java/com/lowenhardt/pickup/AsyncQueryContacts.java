@@ -4,11 +4,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
 import com.lowenhardt.pickup.models.Contact;
@@ -35,6 +32,11 @@ class AsyncQueryContacts extends AsyncTask<Void, Void, ArrayList<Contact>> {
 
     @Override
     protected ArrayList<Contact> doInBackground(Void... voids) {
+        if (ContactsCache.isCacheSet()) {
+            Crashlytics.log(Log.INFO, TAG, "Contacts cache is set, not re-querying");
+            return ContactsCache.getContacts();
+        }
+
         Crashlytics.log(Log.INFO, TAG, "Loading contacts asynchronously");
 
         String[] projection = {
@@ -98,6 +100,9 @@ class AsyncQueryContacts extends AsyncTask<Void, Void, ArrayList<Contact>> {
     @Override
     protected void onPostExecute(ArrayList<Contact> contacts) {
         super.onPostExecute(contacts);
+
+        ContactsCache.setContacts(contacts);
+
         if (this.cb == null) {
             return;
         }
@@ -113,12 +118,9 @@ class AsyncQueryContacts extends AsyncTask<Void, Void, ArrayList<Contact>> {
     @Override
     protected void onCancelled(ArrayList<Contact> contacts) {
         super.onCancelled(contacts);
-        onCancelled();
-    }
 
-    @Override
-    protected void onCancelled() {
-        super.onCancelled();
+        ContactsCache.setContacts(null);
+
         if (cb == null) {
             return;
         }
