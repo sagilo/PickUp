@@ -19,7 +19,8 @@ public class CallReceiver extends PhoneCallReceiver {
     private static final String TAG = CallReceiver.class.getSimpleName();
 
     @Override
-    protected void onIncomingCallReceived(Context c, String number, Date start) {
+    protected void onMissedCall(Context c, String number, Date start) {
+        Crashlytics.log(Log.DEBUG, TAG,"New Missed Call, number: "+number);
         Database db = new Database(c);
         List<ContactConfig> contactConfigs = db.getAllContactConfigs(c);
         ContactConfig matchingContact = null;
@@ -36,7 +37,7 @@ public class CallReceiver extends PhoneCallReceiver {
             return;
         }
 
-        Crashlytics.log(Log.INFO, TAG, "Incoming phone number matches contact config: "+matchingContact);
+        Crashlytics.log(Log.INFO, TAG, "Missed call phone number matches contact config: "+matchingContact);
 
         matchingContact.addCall(start);
         db.addOrUpdate(matchingContact, c);
@@ -143,6 +144,11 @@ public class CallReceiver extends PhoneCallReceiver {
     }
 
     @Override
+    protected void onIncomingCallReceived(Context c, String number, Date start) {
+        //
+    }
+
+    @Override
     protected void onIncomingCallAnswered(Context ctx, String number, Date start) {
         //
     }
@@ -161,10 +167,4 @@ public class CallReceiver extends PhoneCallReceiver {
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end) {
         //
     }
-
-    @Override
-    protected void onMissedCall(Context ctx, String number, Date start) {
-        //
-    }
-
 }
