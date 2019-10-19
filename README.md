@@ -3,9 +3,9 @@
 # PickUp
 An Android app for changing ringer volume for selected repeated callers
 
-My phone is always muted, I hate the distraction and even more I hate to distract others.  
+My phone is always muted, I hate the distraction and even more, I hate to distract others.  
 Here and there, my wife tries to get a hold of me with no success.  
-Usually it's not that important, but sometimes it's a bit more urgent or just a matter of time relevance.  
+Usually, it's not that important, but sometimes it's a bit more urgent or just a matter of time relevance.  
 
 For this reason, I've created __PickUp__.  
 
@@ -15,7 +15,7 @@ Now you can mute your phone and be sure no important calls will be missed, at le
 ### Current features
 * Select phone number for which ringer volume will be changed
 * Select how many calls are required before changing the ringer volume
-* Select the anount of time in which calls are counted
+* Select the amount of time in which calls are counted
 * Select the ringer volume to be set once all conditions are met
 
 ### Screenshots
